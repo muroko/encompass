@@ -1,4 +1,4 @@
-'''Chain-specific Peercoin code'''
+'''Chain-specific ParkByte code'''
 from cryptocur import CryptoCur, hash_encode, hash_decode, rev_hex, int_to_hex, chainhook
 import os
 import time
@@ -41,7 +41,7 @@ class ParkByte(CryptoCur):
 
     checkpoints = {
         0: "000000a49664091ce50794d84fb243cde97738534b554b2022fa00a029d0ab7c",
-        540187: " 5f2f120099402b1d3ff7e1e1147891479c3a43220a7ce26617ebf9119644d747",
+        300000: " 15bc49fb520cfe5d80a2a3e08f13658862ba1641b27c521159e64b77dea949ed"
     }
 
     def get_target(self, index, chain=None):
