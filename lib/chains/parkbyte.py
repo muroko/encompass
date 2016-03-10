@@ -15,9 +15,12 @@ class ParkByte(CryptoCur):
     ext_priv_version = '0488ade4'
 
     DUST_THRESHOLD = 5430
-    MIN_RELAY_TX_FEE = 100
-    RECOMMENDED_FEE = 1000
+    MIN_RELAY_TX_FEE = 1000
+    RECOMMENDED_FEE = 2000
     COINBASE_MATURITY = 120
+
+    # ParkByte timestamp fix
+    unix_time = int(time.time())
 
     block_explorers = {
         'CryptoID.info': 'https://chainz.cryptoid.info/pkb/tx.dws?'
@@ -98,10 +101,10 @@ class ParkByte(CryptoCur):
 
     @chainhook
     def transaction_serialize(self, tx, for_sig, fields):
-        unix_time = getattr(tx, 'timestamp', None)
-        if unix_time is None:
-            unix_time = int(time.time())
-        timestamp = ('timestamp', [int_to_hex(unix_time, 4)])
+        # ParkByte mod - when spending multiple inputs, timestamp must be the same for all inputs or RPC will reject TX
+        if (int(time.time()) - self.unix_time) >= 10:
+            self.unix_time = int(time.time())
+        timestamp = ('timestamp', [int_to_hex(self.unix_time, 4)])
         fields.insert(1, timestamp)
 
 Currency = ParkByte
